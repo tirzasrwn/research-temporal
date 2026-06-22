@@ -6,6 +6,7 @@ import (
 	"hello-temporal/hello"
 
 	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/contrib/sysinfo"
 	"go.temporal.io/sdk/worker"
 )
 
@@ -16,7 +17,9 @@ func main() {
 	}
 	defer c.Close()
 
-	w := worker.New(c, "greeting-tasks", worker.Options{})
+	w := worker.New(c, "greeting-tasks", worker.Options{
+		SysInfoProvider: sysinfo.SysInfoProvider(),
+	})
 
 	w.RegisterWorkflow(hello.GreetSomeone)
 
