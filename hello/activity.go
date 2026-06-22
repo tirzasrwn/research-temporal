@@ -17,6 +17,7 @@ func SendNotification(ctx context.Context, userID string, message string) (strin
 	time.Sleep(time.Duration(500+rand.Intn(1500)) * time.Millisecond)
 
 	if rand.Float64() < 0.4 {
+		logger.Error("notification service unavailable (simulated transient failure)")
 		return "", errors.New("notification service unavailable (simulated transient failure)")
 	}
 
@@ -32,14 +33,17 @@ func ProcessPayment(ctx context.Context, amount float64, currency string) (strin
 	time.Sleep(2 * time.Second)
 
 	if amount <= 0 {
+		logger.Error("invalid amount: must be positive")
 		return "", errors.New("invalid amount: must be positive")
 	}
 
 	if amount > 5000 {
+		logger.Error("amount %.2f %s exceeds daily limit of 5000", amount, currency)
 		return "", fmt.Errorf("amount %.2f %s exceeds daily limit of 5000", amount, currency)
 	}
 
 	if rand.Float64() < 0.25 {
+		logger.Error("payment gateway timeout (simulated transient failure)")
 		return "", errors.New("payment gateway timeout (simulated transient failure)")
 	}
 
