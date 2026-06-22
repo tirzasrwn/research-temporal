@@ -22,6 +22,8 @@ func main() {
 	})
 
 	w.RegisterWorkflow(hello.GreetSomeone)
+	w.RegisterActivity(hello.SendNotification)
+	w.RegisterActivity(hello.ProcessPayment)
 
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
