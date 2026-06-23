@@ -30,5 +30,18 @@ func GreetSomeone(ctx workflow.Context, name string) (string, error) {
 		return "", err
 	}
 
-	return "Hello " + name + "! " + notifResult + " | " + paymentResult, nil
+	receipt := "Hello " + name + "! " + notifResult + " | " + paymentResult
+
+	cwo := workflow.ChildWorkflowOptions{
+		TaskQueue: "fulfillment-tasks",
+	}
+	cctx := workflow.WithChildOptions(ctx, cwo)
+
+	var fulfillResult string
+	err = workflow.ExecuteChildWorkflow(cctx, "fulfillGreeting", receipt).Get(cctx, &fulfillResult)
+	if err != nil {
+		return "", err
+	}
+
+	return fulfillResult, nil
 }

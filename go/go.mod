@@ -1,4 +1,4 @@
-module hello-temporal
+module hello-temporal-go
 
 go 1.25.0
 

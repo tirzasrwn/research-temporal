@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"hello-temporal/hello"
+	"hello-temporal-go/hello"
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/contrib/sysinfo"
